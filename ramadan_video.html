@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramadan à travers l'Afrique 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A843;
+    --deep-gold: #B8860B;
+    --cream: #FDF6E3;
+    --night: #0A0A18;
+    --midnight: #12122A;
+    --guinea-green: #009460;
+    --guinea-yellow: #F7D117;
+    --guinea-red: #CE1126;
+    --niger-orange: #E05206;
+    --niger-white: #F5F5F5;
+    --mali-green: #009A00;
+    --mali-yellow: #FFCD00;
+    --mali-red: #CE1126;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--night);
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    cursor: none;
+  }
+
+  /* ── STAR BACKGROUND ── */
+  #stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── SLIDE SYSTEM ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1s ease, transform 1.2s ease;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: scale(0.97);
+    z-index: 1;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), #fff8a0, var(--gold));
+    z-index: 999;
+    transition: width 0.2s linear;
+    box-shadow: 0 0 12px var(--gold);
+  }
+
+  /* ── SLIDE DOTS ── */
+  #dots {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 999;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.5);
+  }
+
+  /* ── NAV ARROWS ── */
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(212,168,67,0.15);
+    border: 1px solid rgba(212,168,67,0.4);
+    color: var(--gold);
+    font-size: 1.8rem;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .nav-btn:hover { background: rgba(212,168,67,0.35); }
+  #prev-btn { left: 16px; }
+  #next-btn { right: 16px; }
+
+  /* ── SLIDE COUNTER ── */
+  #slide-counter {
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    color: rgba(212,168,67,0.7);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    z-index: 999;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  /* ══════════════════════════════
+     SLIDE 0 — OPENING TITLE
+  ══════════════════════════════ */
+  #slide-0 {
+    background: var(--night);
+    text-align: center;
+  }
+  .moon-container {
+    position: relative;
+    margin-bottom: 2rem;
+    animation: float 4s ease-in-out infinite;
+  }
+  .big-moon {
+    font-size: 5rem;
+    filter: drop-shadow(0 0 40px rgba(212,168,67,0.8));
+    display: block;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  .title-ar {
+    font-family: 'Scheherazade New', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(212,168,67,0.5);
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 20px rgba(212,168,67,0.4); }
+    to { text-shadow: 0 0 50px rgba(212,168,67,0.9); }
+  }
+  .title-fr {
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--cream);
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .subtitle {
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    color: rgba(212,168,67,0.6);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .flag-strip {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .flag-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .flag-item:nth-child(1) { animation-delay: 0.8s; }
+  .flag-item:nth-child(2) { animation-delay: 1.2s; }
+  .flag-item:nth-child(3) { animation-delay: 1.6s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .flag-emoji { font-size: 2.2rem; }
+  .flag-name {
+    font-size: 0.65rem;
+    color: rgba(212,168,67,0.7);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .divider-line {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.2rem auto;
+  }
+  .school-badge {
+    margin-top: 2rem;
+    padding: 0.5rem 1.4rem;
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: 30px;
+    color: rgba(212,168,67,0.5);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════
+     SHARED SECTION STYLES
+  ══════════════════════════════ */
+  .country-header {
+    text-align: center;
+    padding: 1.5rem 2rem 1rem;
+    position: relative;
+    z-index: 5;
+  }
+  .country-flag-big { font-size: 2.8rem; margin-bottom: 0.3rem; }
+  .country-name {
+    font-size: clamp(1.6rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .country-tagline {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 0.2rem;
+  }
+  .country-stripe {
+    width: 60px;
+    height: 3px;
+    margin: 0.6rem auto 0;
+    border-radius: 2px;
+  }
+
+  /* ── CONTENT CARDS ── */
+  .content-area {
+    flex: 1;
+    width: 100%;
+    padding: 0 3vw 2rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: stretch;
+    overflow: hidden;
+    max-height: calc(100vh - 160px);
+  }
+  .info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+  .media-col {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+  .card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .card-title {
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+  }
+  .card-body {
+    font-size: clamp(0.75rem, 1.4vw, 0.9rem);
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    font-weight: 300;
+  }
+  .food-tag {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    margin: 0.2rem 0.2rem 0.2rem 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .quote-block {
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    font-style: italic;
+    color: var(--gold);
+    text-align: center;
+    padding: 0.5rem;
+    line-height: 1.5;
+  }
+  .media-item {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+  .media-item video,
+  .media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .media-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    padding: 0.5rem 0.7rem 0.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ══════════════════════════════
+     SLIDE 1 — GUINEA INTRO
+  ══════════════════════════════ */
+  #slide-1 {
+    background: linear-gradient(160deg, #0c1a0e 0%, #0A0A18 60%, #1a0c0e 100%);
+  }
+  #slide-1 .country-name { color: var(--guinea-green); }
+  #slide-1 .country-tagline { color: var(--guinea-yellow); }
+  #slide-1 .country-stripe { background: linear-gradient(90deg, var(--guinea-red), var(--guinea-yellow), var(--guinea-green)); }
+  #slide-1 .card-title { color: var(--guinea-yellow); }
+  #slide-1 .food-tag { background: rgba(0,148,96,0.2); color: var(--guinea-green); border: 1px solid rgba(0,148,96,0.4); }
+  #slide-1 .quote-block { color: var(--guinea-yellow); }
+
+  /* ══════════════════════════════
+     SLIDE 2 — GUINEA FOODS VIDEO
+  ══════════════════════════════ */
+  #slide-2 {
+    background: linear-gradient(160deg, #0c1a0e 0%, #0A0A18 70%);
+    flex-direction: column;
+  }
+
+  /* ══════════════════════════════
+     SLIDE 3 — NIGER
+  ══════════════════════════════ */
+  #slide-3 {
+    background: linear-gradient(160deg, #1a0e00 0%, #0A0A18 60%, #0e0a00 100%);
+  }
+  #slide-3 .country-name { color: var(--niger-orange); }
+  #slide-3 .country-tagline { color: #F5A623; }
+  #slide-3 .country-stripe { background: linear-gradient(90deg, var(--niger-orange), #fff, var(--guinea-green)); }
+  #slide-3 .card-title { color: #F5A623; }
+  #slide-3 .food-tag { background: rgba(224,82,6,0.2); color: var(--niger-orange); border: 1px solid rgba(224,82,6,0.4); }
+  #slide-3 .quote-block { color: #F5A623; }
+
+  /* ══════════════════════════════
+     SLIDE 4 — NIGER VISUAL
+  ══════════════════════════════ */
+  #slide-4 {
+    background: linear-gradient(160deg, #1a0e00 0%, #0A0A18 70%);
+  }
+
+  /* ══════════════════════════════
+     SLIDE 5 — MALI
+  ══════════════════════════════ */
+  #slide-5 {
+    background: linear-gradient(160deg, #0c1a0c 0%, #0A0A18 60%, #0a0a00 100%);
+  }
+  #slide-5 .country-name { color: var(--mali-green); }
+  #slide-5 .country-tagline { color: var(--mali-yellow); }
+  #slide-5 .country-stripe { background: linear-gradient(90deg, var(--mali-green), var(--mali-yellow), var(--mali-red)); }
+  #slide-5 .card-title { color: var(--mali-yellow); }
+  #slide-5 .food-tag { background: rgba(0,154,0,0.2); color: var(--mali-green); border: 1px solid rgba(0,154,0,0.4); }
+  #slide-5 .quote-block { color: var(--mali-yellow); }
+
+  /* ══════════════════════════════
+     SLIDE 6 — MALI VISUAL
+  ══════════════════════════════ */
+  #slide-6 {
+    background: linear-gradient(160deg, #0c1a0c 0%, #0A0A18 70%);
+  }
+
+  /* ══════════════════════════════
+     SLIDE 7 — UNITY CLOSING
+  ══════════════════════════════ */
+  #slide-7 {
+    background: var(--night);
+    text-align: center;
+  }
+  .unity-flags {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+  .unity-flag-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .unity-flag-circle {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 2px solid rgba(212,168,67,0.3);
+    box-shadow: 0 0 20px rgba(212,168,67,0.15);
+  }
+  .unity-title {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: glow 2.5s ease-in-out infinite alternate;
+  }
+  .unity-subtitle {
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    color: var(--cream);
+    font-weight: 300;
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+  }
+  .values-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+  .value-pill {
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .closing-verse {
+    font-family: 'Scheherazade New', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: var(--gold);
+    margin-top: 1rem;
+  }
+  .ramadan-kareem {
+    font-family: 'Scheherazade New', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212,168,67,0.6);
+    margin-top: 0.5rem;
+  }
+
+  /* ── VIDEO GRID ── */
+  .video-grid {
+    display: grid;
+    gap: 0.8rem;
+    width: 100%;
+    height: 100%;
+  }
+  .video-grid-2 { grid-template-columns: 1fr 1fr; }
+  .video-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-video {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+  .grid-video video, .grid-video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .grid-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 0.6rem 0.6rem 0.4rem;
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ── SECTION TITLE SLIDES ── */
+  .section-intro-slide {
+    text-align: center;
+    padding: 2rem;
+  }
+  .section-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.8rem;
+  }
+  .section-big-num {
+    font-size: 8rem;
+    font-weight: 900;
+    opacity: 0.06;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: -5px;
+    user-select: none;
+  }
+
+  /* Fullscreen video background slides */
+  .bg-video-slide {
+    position: relative;
+  }
+  .bg-video-slide video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+  }
+  .bg-video-overlay {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 2rem;
+    max-width: 700px;
+  }
+
+  /* Animated entrance for cards */
+  .slide.active .card {
+    animation: slideInCard 0.5s ease forwards;
+  }
+  .slide.active .card:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+  .slide.active .card:nth-child(2) { animation-delay: 0.25s; opacity: 0; }
+  .slide.active .card:nth-child(3) { animation-delay: 0.4s; opacity: 0; }
+  @keyframes slideInCard {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Sparkle cursor */
+  #cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: screen;
+    transition: transform 0.1s;
+    box-shadow: 0 0 12px var(--gold);
+  }
+
+  /* autoplay label */
+  #autoplay-btn {
+    position: fixed;
+    top: 18px;
+    left: 22px;
+    background: rgba(212,168,67,0.12);
+    border: 1px solid rgba(212,168,67,0.35);
+    color: rgba(212,168,67,0.8);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 999;
+    transition: background 0.2s;
+  }
+  #autoplay-btn:hover { background: rgba(212,168,67,0.25); }
+
+  .media-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .media-grid-item {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+    min-height: 0;
+  }
+  .media-grid-item img, .media-grid-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .media-grid-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 0.5rem 0.6rem 0.35rem;
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div id="cursor"></div>
+
+<!-- Controls -->
+<div id="autoplay-btn" onclick="toggleAuto()">⏸ Auto</div>
+<div id="slide-counter">01 / 08</div>
+<button class="nav-btn" id="prev-btn" onclick="prevSlide()">‹</button>
+<button class="nav-btn" id="next-btn" onclick="nextSlide()">›</button>
+<div id="dots"></div>
+<div id="progress-bar" style="width:0%"></div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 0 — CINEMATIC OPENING
+════════════════════════════════════════════ -->
+<div class="slide active" id="slide-0">
+  <div class="moon-container">
+    <span class="big-moon">🌙</span>
+  </div>
+  <div class="title-ar">رمضان كريم</div>
+  <div class="divider-line"></div>
+  <div class="title-fr">Ramadan à travers l'Afrique</div>
+  <div class="subtitle">Traditions · Spiritualité · Partage</div>
+  <div class="flag-strip">
+    <div class="flag-item">
+      <span class="flag-emoji">🇬🇳</span>
+      <span class="flag-name">Guinée</span>
+    </div>
+    <div class="flag-item" style="font-size:1.4rem; color: rgba(212,168,67,0.4);">✦</div>
+    <div class="flag-item">
+      <span class="flag-emoji">🇳🇪</span>
+      <span class="flag-name">Niger</span>
+    </div>
+    <div class="flag-item" style="font-size:1.4rem; color: rgba(212,168,67,0.4);">✦</div>
+    <div class="flag-item">
+      <span class="flag-emoji">🇲🇱</span>
+      <span class="flag-name">Mali</span>
+    </div>
+  </div>
+  <div class="school-badge">Iftar scolaire · Présenté par les élèves</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 1 — GUINEA INFO
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-1">
+  <div class="country-header">
+    <div class="country-flag-big">🇬🇳</div>
+    <div class="country-name">Guinée</div>
+    <div class="country-tagline">« Le Paradis de l'Afrique de l'Ouest »</div>
+    <div class="country-stripe"></div>
+  </div>
+  <div class="content-area">
+    <div class="info-col">
+      <div class="card">
+        <div class="card-title">🌅 La Journée</div>
+        <div class="card-body">
+          En Guinée, la journée commence très tôt. Les fidèles se lèvent à <strong style="color:#F7D117">4h du matin</strong> pour le Suhur, puis accomplissent la prière de Fajr. Malgré la fatigue, la vie professionnelle et scolaire continue à un rythme plus calme.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🤝 Solidarité</div>
+        <div class="card-body">
+          L'Iftar se fait en groupe — chacun apporte un plat, et le repas est partagé ensemble dans un esprit de convivialité. Des associations distribuent même de la nourriture dans les embouteillages pour que personne ne rompe le jeûne seul.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🍽️ Saveurs du Ramadan</div>
+        <div class="card-body">
+          <span class="food-tag">Foutti / Lafidi</span>
+          <span class="food-tag">Tô</span>
+          <span class="food-tag">Bissap</span>
+          <span class="food-tag">Jus de Gingembre</span>
+          <span class="food-tag">Bouillie de Maïs</span>
+          <span class="food-tag">Riz au Lait</span>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <div class="media-item" style="flex:1.5">
+        <video autoplay muted loop playsinline>
+          <source src="v5.mp4" type="video/mp4">
+        </video>
+        <div class="media-label">🎥 Traditions Guinéennes</div>
+      </div>
+      <div class="media-item" style="flex:1">
+        <video autoplay muted loop playsinline>
+          <source src="v3.mp4" type="video/mp4">
+        </video>
+        <div class="media-label">🍲 Foutti — Le plat emblématique</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 2 — GUINEA FOODS GALLERY
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div class="country-header" style="padding-bottom:0.5rem">
+    <div class="country-flag-big">🇬🇳</div>
+    <div class="country-name" style="color:var(--guinea-green); font-size:clamp(1.2rem,3vw,2rem)">Les Saveurs de Guinée</div>
+    <div class="country-stripe" style="background:linear-gradient(90deg,var(--guinea-red),var(--guinea-yellow),var(--guinea-green))"></div>
+  </div>
+  <div class="content-area" style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr;">
+    <div class="media-grid-item">
+      <video autoplay muted loop playsinline>
+        <source src="v1.mp4" type="video/mp4">
+      </video>
+      <div class="media-grid-label">Jus de Gingembre</div>
+    </div>
+    <div class="media-grid-item">
+      <video autoplay muted loop playsinline>
+        <source src="v2.mp4" type="video/mp4">
+      </video>
+      <div class="media-grid-label">Jus de Bissab (Hibiscus)</div>
+    </div>
+    <div class="media-grid-item">
+      <video autoplay muted loop playsinline>
+        <source src="v4.mp4" type="video/mp4">
+      </video>
+      <div class="media-grid-label">Le Foutti</div>
+    </div>
+    <div class="media-grid-item">
+      <video autoplay muted loop playsinline>
+        <source src="v6.mp4" type="video/mp4">
+      </video>
+      <div class="media-grid-label">Tô — Poudre de Manioc</div>
+    </div>
+    <div class="media-grid-item" style="grid-column: 2 / 4;">
+      <img src="img1.jpeg" alt="Iftar Guinée">
+      <div class="media-grid-label">Beignets de l'Iftar · Foutti servi au coucher du soleil</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 3 — NIGER INFO
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div class="country-header">
+    <div class="country-flag-big">🇳🇪</div>
+    <div class="country-name">Niger</div>
+    <div class="country-tagline">« Fraternité & Hospitalité »</div>
+    <div class="country-stripe"></div>
+  </div>
+  <div class="content-area">
+    <div class="info-col">
+      <div class="card">
+        <div class="card-title">☀️ La Journée — Spiritualité</div>
+        <div class="card-body">
+          La chaleur intense ralentit le rythme. La population se consacre au jeûne, à la prière et à l'écoute des prêches. Un temps de recueillement profond.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌅 Le Crépuscule — Solidarité</div>
+        <div class="card-body">
+          À l'heure de l'Iftar, on déploie des <strong style="color:#F5A623">nattes dans la rue</strong> pour partager le repas entre voisins et passants. <em>Personne ne mange seul au Niger.</em>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌙 La Nuit — Vie Sociale</div>
+        <div class="card-body">
+          Après la prière de Tarawih, les températures baissent et les rues s'animent. Les familles se visitent, les marchés restent ouverts tard dans une ambiance joyeuse.
+          <div style="margin-top:0.6rem">
+            <span class="food-tag">Eau & Dattes</span>
+            <span class="food-tag">Koko (bouillie)</span>
+            <span class="food-tag">Kosai (beignets)</span>
+            <span class="food-tag">Bissap · Gingembre</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <div class="media-item" style="flex:1.2">
+        <img src="img2.jpeg" alt="Iftar communautaire Niger">
+        <div class="media-label">🌙 Iftar communautaire — tous ensemble sous le ciel</div>
+      </div>
+      <div class="media-item" style="flex:1">
+        <img src="img3.jpeg" alt="Distribution Ramadan Niger">
+        <div class="media-label">🤲 Distribution de nourriture — Zakat al-Fitr</div>
+      </div>
+      <div class="card" style="flex:0; padding:0.6rem 1rem; border:none; background:rgba(224,82,6,0.08)">
+        <div class="quote-block">« Le Ramadan nigérien est l'expression ultime de notre fraternité. »</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 4 — NIGER VISUAL FULLSCREEN
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div class="country-header" style="padding-bottom:0.5rem">
+    <div class="country-flag-big">🇳🇪</div>
+    <div class="country-name" style="color:var(--niger-orange); font-size:clamp(1.2rem,3vw,2rem)">Solidarité au Niger</div>
+    <div class="country-stripe" style="background:linear-gradient(90deg,var(--niger-orange),#fff,var(--guinea-green))"></div>
+  </div>
+  <div class="content-area" style="display:grid; grid-template-columns:1.2fr 1fr; grid-template-rows:1fr 1fr;">
+    <div class="media-grid-item" style="grid-row: 1 / 3;">
+      <img src="img2.jpeg" alt="Iftar Niger communautaire" style="object-position: center top;">
+      <div class="media-grid-label">Iftar collectif dans la rue — une tradition nigérienne</div>
+    </div>
+    <div class="media-grid-item">
+      <img src="img3.jpeg" alt="Distribution nourriture Niger">
+      <div class="media-grid-label">Distribution alimentaire du Ramadan</div>
+    </div>
+    <div class="media-grid-item" style="background: rgba(224,82,6,0.08); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.2rem; border-radius:10px; border: 1px solid rgba(224,82,6,0.2)">
+      <div style="font-size:0.6rem; letter-spacing:3px; color:rgba(245,166,35,0.6); text-transform:uppercase; margin-bottom:0.6rem">Les 4 moments forts</div>
+      <div style="display:flex; flex-direction:column; gap:0.4rem; width:100%">
+        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; color:rgba(255,255,255,0.8)"><span style="font-size:1rem">☀️</span> Journée — Spiritualité</div>
+        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; color:rgba(255,255,255,0.8)"><span style="font-size:1rem">🌅</span> Crépuscule — Solidarité</div>
+        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; color:rgba(255,255,255,0.8)"><span style="font-size:1rem">🍲</span> Repas — Traditions</div>
+        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; color:rgba(255,255,255,0.8)"><span style="font-size:1rem">🌙</span> Nuit — Vie Sociale</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 5 — MALI INFO
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div class="country-header">
+    <div class="country-flag-big">🇲🇱</div>
+    <div class="country-name">Mali</div>
+    <div class="country-tagline">« Foi, Prière, Partage & Solidarité »</div>
+    <div class="country-stripe"></div>
+  </div>
+  <div class="content-area">
+    <div class="info-col">
+      <div class="card">
+        <div class="card-title">🕌 Spiritualité</div>
+        <div class="card-body">
+          Pays majoritairement musulman, le Mali vit le Ramadan intensément. Les fidèles multiplient les prières, lisent le Coran, demandent pardon et cultivent la patience. Les conflits et les mauvaises paroles sont évités.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🍽️ L'Iftar au Mali</div>
+        <div class="card-body">
+          Les familles se réunissent au coucher du soleil. Les plats traditionnels sont servis avec amour :
+          <div style="margin-top:0.5rem">
+            <span class="food-tag">Dattes</span>
+            <span class="food-tag">Bouillie</span>
+            <span class="food-tag">Riz</span>
+            <span class="food-tag">Tô</span>
+            <span class="food-tag">Jus Local</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🤲 Solidarité & Zakat</div>
+        <div class="card-body">
+          Le Ramadan malien est le mois de la générosité. La Zakat, la distribution de nourriture et l'aide aux orphelins reflètent les valeurs d'<strong style="color:#FFCD00">unité</strong>, de <strong style="color:#FFCD00">paix</strong> et de <strong style="color:#FFCD00">fraternité</strong>.
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <div class="media-item" style="flex:1.5">
+        <img src="img4.jpeg" alt="Mali Ramadan infographie" style="object-fit: contain; background:#1a1a0a;">
+        <div class="media-label">🇲🇱 Le Ramadan et les traditions au Mali</div>
+      </div>
+      <div class="media-item" style="flex:1">
+        <img src="img6.jpeg" alt="Distribution Mali">
+        <div class="media-label">🤲 Distribution alimentaire du Ramadan</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 6 — MALI VISUAL
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div class="country-header" style="padding-bottom:0.5rem">
+    <div class="country-flag-big">🇲🇱</div>
+    <div class="country-name" style="color:var(--mali-green); font-size:clamp(1.2rem,3vw,2rem)">Unité & Fraternité au Mali</div>
+    <div class="country-stripe" style="background:linear-gradient(90deg,var(--mali-green),var(--mali-yellow),var(--mali-red))"></div>
+  </div>
+  <div class="content-area" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;">
+    <div class="media-grid-item" style="grid-row: 1/3;">
+      <img src="img4.jpeg" alt="Mali traditions" style="object-fit:contain; background:#12200c;">
+      <div class="media-grid-label">Traditions du Ramadan au Mali</div>
+    </div>
+    <div class="media-grid-item">
+      <img src="img5.jpeg" alt="Kosai Mali Niger">
+      <div class="media-grid-label">Mets du Ramadan · Beignets &amp; Boissons</div>
+    </div>
+    <div class="media-grid-item">
+      <img src="img6.jpeg" alt="Distribution Mali">
+      <div class="media-grid-label">Solidarité — Distribution alimentaire</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 7 — UNITY CLOSING
+════════════════════════════════════════════ -->
+<div class="slide" id="slide-7">
+  <div class="moon-container" style="margin-bottom:1rem">
+    <span class="big-moon" style="font-size:3.5rem">🌙</span>
+  </div>
+  <div class="unity-title">Un seul Ramadan</div>
+  <div class="unity-subtitle">Mille façons de le vivre</div>
+  <div class="divider-line"></div>
+  <div class="unity-flags">
+    <div class="unity-flag-item">
+      <div class="unity-flag-circle" style="background:rgba(0,148,96,0.1)">🇬🇳</div>
+      <span style="font-size:0.6rem; letter-spacing:2px; color:var(--guinea-green); text-transform:uppercase">Guinée</span>
+    </div>
+    <div class="unity-flag-item">
+      <div class="unity-flag-circle" style="background:rgba(224,82,6,0.1)">🇳🇪</div>
+      <span style="font-size:0.6rem; letter-spacing:2px; color:var(--niger-orange); text-transform:uppercase">Niger</span>
+    </div>
+    <div class="unity-flag-item">
+      <div class="unity-flag-circle" style="background:rgba(0,154,0,0.1)">🇲🇱</div>
+      <span style="font-size:0.6rem; letter-spacing:2px; color:var(--mali-green); text-transform:uppercase">Mali</span>
+    </div>
+  </div>
+  <div class="values-row">
+    <div class="value-pill" style="color:var(--guinea-green); border-color:rgba(0,148,96,0.4); background:rgba(0,148,96,0.08)">Foi</div>
+    <div class="value-pill" style="color:var(--gold); border-color:rgba(212,168,67,0.4); background:rgba(212,168,67,0.08)">Partage</div>
+    <div class="value-pill" style="color:var(--niger-orange); border-color:rgba(224,82,6,0.4); background:rgba(224,82,6,0.08)">Solidarité</div>
+    <div class="value-pill" style="color:var(--mali-yellow); border-color:rgba(255,205,0,0.4); background:rgba(255,205,0,0.08)">Fraternité</div>
+    <div class="value-pill" style="color:#a8d8ea; border-color:rgba(168,216,234,0.3); background:rgba(168,216,234,0.06)">Paix</div>
+  </div>
+  <div class="ramadan-kareem">رمضان كريم</div>
+  <div style="font-size:0.75rem; color:rgba(212,168,67,0.5); letter-spacing:4px; margin-top:0.4rem; text-transform:uppercase">Ramadan Karim</div>
+  <div class="school-badge" style="margin-top:1.5rem">Présenté par les élèves · Iftar scolaire</div>
+</div>
+
+<script>
+// ── STARS ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const stars = Array.from({length: 180}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 1.5 + 0.2,
+  a: Math.random(),
+  speed: Math.random() * 0.008 + 0.003
+}));
+function drawStars() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s => {
+    s.a += s.speed;
+    const alpha = (Math.sin(s.a) + 1) / 2 * 0.8 + 0.1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,200,${alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX - 6 + 'px';
+  cursor.style.top = e.clientY - 6 + 'px';
+});
+
+// ── SLIDES ──
+const TOTAL = 8;
+let current = 0;
+let autoTimer = null;
+let autoOn = true;
+const DURATIONS = [7000, 10000, 10000, 9000, 9000, 10000, 9000, 0];
+
+function getSlide(i) { return document.getElementById('slide-'+i); }
+
+function goTo(n) {
+  if (n < 0 || n >= TOTAL) return;
+  getSlide(current).classList.remove('active');
+  getSlide(current).classList.add('exit');
+  setTimeout(() => getSlide(current < n ? current : n + (current - n)).classList.remove('exit'), 1200);
+  const prev = current;
+  current = n;
+  getSlide(current).classList.add('active');
+  setTimeout(() => getSlide(prev).classList.remove('exit'), 1200);
+  updateUI();
+  if (autoOn) scheduleNext();
+}
+
+function nextSlide() { if (current < TOTAL-1) goTo(current+1); }
+function prevSlide() { if (current > 0) goTo(current-1); }
+
+function updateUI() {
+  document.getElementById('slide-counter').textContent =
+    String(current+1).padStart(2,'0') + ' / ' + String(TOTAL).padStart(2,'0');
+  document.querySelectorAll('.dot').forEach((d,i) => {
+    d.classList.toggle('active', i === current);
+  });
+  // progress
+  const pct = (current / (TOTAL-1)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function scheduleNext() {
+  clearTimeout(autoTimer);
+  if (current >= TOTAL-1) return;
+  const dur = DURATIONS[current] || 8000;
+  autoTimer = setTimeout(() => { if (autoOn) nextSlide(); }, dur);
+}
+
+function toggleAuto() {
+  autoOn = !autoOn;
+  document.getElementById('autoplay-btn').textContent = autoOn ? '⏸ Auto' : '▶ Auto';
+  if (autoOn) scheduleNext();
+  else clearTimeout(autoTimer);
+}
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+for (let i=0;i<TOTAL;i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+  if (e.key===' ') toggleAuto();
+});
+
+updateUI();
+scheduleNext();
+</script>
+</body>
+</html>
